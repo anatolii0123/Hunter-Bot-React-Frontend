@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import {useState} from 'react'
 import React from 'react';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { 
   Box, 
   Button, 
@@ -16,7 +16,6 @@ import { ColorPicker } from 'material-ui-color';
 import 'react-color-picker/index.css'
 
 import SideHeadBar from '../../components/SideHeadbar';
-
 
 const styles = {
   formControl: {
@@ -71,9 +70,9 @@ return (
               <Typography gutterBottom variant="h5" component="div">
                 Roles
               </Typography>
-              <Button variant="outlined" onClick={addRole} startIcon={<AddCircleOutlineIcon />}>
+              {/* <Button variant="outlined" onClick={addRole} startIcon={<AddCircleOutlineIcon />}>
                 New Role
-              </Button>
+              </Button> */}
 
               <div>
                 <ul>
@@ -133,7 +132,7 @@ return (
                 <Button variant="contained" color="primary">
                   Save
                 </Button>
-                <Button variant="contained" color="default">Cancel</Button>
+                <Button variant="contained" color="error">Cancel</Button>
               </div>
             </Card>
         </BoxItem>

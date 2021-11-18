@@ -19,6 +19,7 @@
     "formik": "^2.2.9",
     "material-ui-color": "^1.2.0",
     "react": "^17.0.2",
+    "react-color-picker": "^4.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.15.2",
     "react-router": "^5.2.1",

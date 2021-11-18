@@ -22,7 +22,7 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
 const drawerWidth = 240;
-const navdata = ['role', 'transection', 'setting', 'support'];
+// const navdata = ['role', 'transection', 'setting', 'support'];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -118,7 +118,7 @@ export default function SideHeadbar(props) {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
           <Grid container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={12}>
                 <Toolbar>
                   <IconButton
                     color="inherit"
@@ -130,13 +130,13 @@ export default function SideHeadbar(props) {
                       <MenuIcon />
                     </IconButton>
                     <Typography align="right" variant="h6" noWrap component="div">
-                      server
+                      Discord Bot Server Management
                     </Typography>
                 </Toolbar>
             </Grid>
-            { navdata.map((data,i) =>
+            {/* { navdata.map((data,i) =>
               <Navitem key={i} data={data} />
-            )}
+            )} */}
             </Grid>
       </AppBar>
       <Drawer
@@ -159,25 +159,18 @@ export default function SideHeadbar(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button>
+            <ListItemIcon>
+            <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Roles" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Messages" />
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>
