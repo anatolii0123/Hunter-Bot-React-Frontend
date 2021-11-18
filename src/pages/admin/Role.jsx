@@ -54,9 +54,9 @@ const addRole = (e) => {
 
 const { classes } = props;
 return (
-  <>
-    <SideHeadBar />
-    <Box sx={{
+    <>
+      <SideHeadBar />
+      <Box sx={{
           display: 'flex',
           justifyContent: 'center',
           p: 1,
@@ -65,7 +65,7 @@ return (
         }}
       >
         <BoxItem>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card>
             <CardContent id="rolelist">
               <Typography gutterBottom variant="h5" component="div">
                 Roles
