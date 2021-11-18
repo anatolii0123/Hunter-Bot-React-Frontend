@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { getGuilds, getAuth } from "../api";
+import { getGuilds, getAuth } from "../../api";
 
-import ListGuild from "./comp/listGuilds";
-import Loading from "./comp/Loading";
-import NavBar from "./comp/navBar";
+import ListGuild from "../../components/listGuilds";
+import Loading from "../../components/Loading";
+import NavBar from "../../components/navBar";
 import queryString from 'query-string';
 
 export default function Dashboard() {

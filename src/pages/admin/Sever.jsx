@@ -5,9 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
-import Loading from "./comp/Loading";
-import NavBar from "./comp/navBar";
-import { getAuth } from "../api";
+import Loading from "../../components/Loading";
+import NavBar from "../../components/navBar";
+import { getAuth } from "../../api";
 export default function Server() {
   const {
     register,

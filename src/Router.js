@@ -3,10 +3,12 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Home from "./components/Home.jsx";
-import Server from "./components/sever.jsx";
-import Dashboard from "./components/Dashboard.jsx";
-import BuyRole from "./components/BuyRole.jsx";
+
+import Home from "./pages/admin/Home";
+import Server from "./pages/admin/Sever";
+import Dashboard from "./pages/admin/Dashboard";
+import Role from './pages/admin/Role';
+import BuyRole from "./pages/client/BuyRole";
 
 export default function Routing() {
   return (
@@ -20,6 +22,9 @@ export default function Routing() {
         </Route>
         <Route path="/server/:id">
           <Server />
+        </Route>
+        <Route path="/role">
+          <Role />
         </Route>
         <Route path="/buyrole">
           <BuyRole />

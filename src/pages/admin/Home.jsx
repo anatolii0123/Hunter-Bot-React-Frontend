@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import Loading from "./comp/Loading";
-import NavBar from "./comp/navBar";
-import { getAuth, Name } from "../api";
+import Loading from "../../components/Loading";
+import NavBar from "../../components/navBar";
+import { getAuth, Name } from "../../api";
 
 function Home() {
   const [acces, setAcces] = useState("");

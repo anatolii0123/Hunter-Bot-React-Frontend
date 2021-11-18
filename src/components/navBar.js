@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { Name } from '../../api'
+import { Name } from '../api'
 
 export default function NavBar({ logo, userName, acces }) {
   let history = useHistory();
