@@ -20,10 +20,10 @@ export default function Routing() {
         <Route path="/account">
           <Dashboard />
         </Route>
-        <Route path="/server/:id">
+        {/* <Route path="/server/:id">
           <Server />
-        </Route>
-        <Route path="/role">
+        </Route> */}
+        <Route path="/server/:id/role">
           <Role />
         </Route>
         <Route path="/buyrole">
