@@ -5,10 +5,12 @@ import {
 } from "react-router-dom";
 
 import Home from "./pages/admin/Home";
-import Server from "./pages/admin/Sever";
+// import Server from "./pages/admin/Sever";
 import Dashboard from "./pages/admin/Dashboard";
 import Role from './pages/admin/Role';
 import BuyRole from "./pages/client/BuyRole";
+
+// import ProtectedRoute from './helpers/ProtectedRoute'
 
 export default function Routing() {
   return (
@@ -17,12 +19,9 @@ export default function Routing() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/account">
+        <Route path="/dashboard">
           <Dashboard />
         </Route>
-        {/* <Route path="/server/:id">
-          <Server />
-        </Route> */}
         <Route path="/server/:id/role">
           <Role />
         </Route>
