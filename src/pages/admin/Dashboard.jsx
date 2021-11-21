@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [permissionNoGuilds, setPermissionNoGuilds] = useState([]);
   const [permissionHasGuilds, setPermissionHasGuilds] = useState([]);
+
   const [userName, setUsername] = useState("");
   const [logo, setLogo] = useState("");
   const [access, setAccess] = useState("");

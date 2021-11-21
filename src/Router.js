@@ -22,7 +22,7 @@ export default function Routing() {
         <Route path="/dashboard">
           <Dashboard />
         </Route>
-        <Route path="/server/:id/role">
+        <Route path="/:guildId/role">
           <Role />
         </Route>
         <Route path="/buyrole">

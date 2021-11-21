@@ -1,4 +1,7 @@
 import * as React from 'react';
+
+import { useHistory } from "react-router";
+
 import { styled, useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -38,6 +41,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 export default function SideHeadbar({ logo, userName, access }) {
+  const history = useHistory();
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -51,7 +56,9 @@ export default function SideHeadbar({ logo, userName, access }) {
   };
 
   const handleLogout = () => {
-
+    logout().then((res) => {
+      history.push('/');
+    });
   }
 
   const handleDrawerOpen = () => {

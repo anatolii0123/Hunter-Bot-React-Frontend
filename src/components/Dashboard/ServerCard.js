@@ -48,7 +48,7 @@ export default function ServerCard({ guild, permission }) {
                                 variant="contained"
                                 color="primary"
                                 endIcon={<Edit />}
-                                onClick={() => window.location.href = `https://hunter-bot-backend.herokuapp.com/server/${guild.id}/role`}
+                                onClick={() => window.location.href = `${config.site_url}/${guild.id}/role`}
                             > Manage </Button>
                         ) : (
                             <Button

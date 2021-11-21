@@ -19,9 +19,10 @@ export function getRoles(guildId) {
     return axios.get(`/api/role?guildId=${guildId}`, { withCredentials: true, credentials: 'include' });
 }
 
-export function setRole(guildId, role) {
+export function modifyRole(role) {
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    return axios.post(`/api/role/setrole`, { guildId, role }, { withCredentials: true, credentials: 'include' });
+    console.log("axios role", role)
+    return axios.post(`/api/role/modifyRole`, { role }, { withCredentials: true, credentials: 'include' });
 }
 
 export function logout() {
