@@ -66,11 +66,10 @@ const styleModal = {
 };
 
 function Role(props) {
-  const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
+  const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": "12" }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
 
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState(data.roles);
-
 
   // const [loading, setLoading] = useState(true);
   // const [roles, setRoles] = useState([]);
@@ -89,7 +88,7 @@ function Role(props) {
     setCurrentRole({
       id: role.id,
       guildId: guildId,
-      price: '0',
+      price: role.price,
     })
     setModalOpen(true)
   }
@@ -114,13 +113,14 @@ function Role(props) {
   const handleModalClose = () => setModalOpen(false);
   const handleSaveRolePrice = () => {
     modifyRole(currentRole).then((res) => {
-      console.log("modify result", res.data)
+      setRoles(res.data.roles)
+      setModalOpen(false)
     }).catch(error => {
       console.log(error)
+      setModalOpen(false)
     })
   }
   // Modal
-
 
   // useEffect(() => {
   //   getAuth().then((res) => {
@@ -135,7 +135,6 @@ function Role(props) {
   // }, [access]);
   // useEffect(() => {
   //   if (access != "authorized") {
-
   //     getRoles(guildId).then(res => {
   //       setRoles(res.data.roles);
   //       setTimeout(() => {

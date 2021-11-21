@@ -1,272 +1,171 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import Fab from '@material-ui/core/Fab';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { useHistory } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { useParams } from "react-router";
 
-let counter = 0;
-function createData(name, price, color, summary) {
-  counter += 1;
-  return { id: counter, name, color, price, summary };
-}
+import {
+  Box,
+  Container,
+  IconButton,
+  Typography,
+  Button,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment,
+} from '@mui/material';
 
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+import { withStyles } from '@mui/styles';
 
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
+import { getAuth, getRoles, buyRole } from '../../api';
+import NavBar from '../../components/NavBar';
+import Loading from "../../components/Loading";
 
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-  { id: 'price', numeric: true, disablePadding: false, label: 'Price ($)' },
-  { id: 'colors', string: true, disablePadding: false, label: 'Colors' },
-  { id: 'summary', string: true, disablePadding: false, label: 'Summary' },
-];
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import PersonIcon from '@mui/icons-material/Person';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-class EnhancedTableHead extends React.Component {
-  createSortHandler = property => event => {
-    this.props.onRequestSort(event, property);
-  };
+const styles = {
+  formControl: {
+    marginBottom: '20px'
+  },
 
-  render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, showstate } = this.props;
+  card: {
+    minWidth: '200px',
+    maxWidth: '350px',
+    display: 'flex',
+    justifyContent: 'center'
+  },
 
-    return (
-      <TableHead>
-        <TableRow style={{ display: showstate }}>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-           
-          </TableCell>
-          {rows.map(
-            row => (
-              <TableCell
-                key={row.id}
-                align="center"
-                sortDirection={orderBy === row.id ? order : false}
-              >
-                <Tooltip
-                  title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
-                >
-                  <TableSortLabel
-                    active={orderBy === row.id}
-                    direction={order}
-                    onClick={this.createSortHandler(row.id)}
-                  >
-                    {row.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            ),
-            this,
-          )}
-        </TableRow>
-      </TableHead>
-    );
+  noRole: {
+    fontSize: '30px'
   }
 }
 
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+function Role(props) {
+  // const history = useHistory();
 
-const styles = theme => ({
-  
-});
+  const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": "12" }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
 
-class BuyRole extends React.Component {
-  state = {
-    order: 'asc',
-    orderBy: 'calories',
-    selected: [],
-    data: [
-      createData('Cupcake', 305,'red', 67),
-      createData('Donut', 452, 'yellow', 51),
-      createData('Eclair', 262, 'brown', 24),
-      createData('Frozen yoghurt', 262,'blue', 24),
-      createData('Gingerbread', 356, 'green', 49),
-      createData('Honeycomb', 408, 'white', 87),
-      createData('Cupcake', 305,'red', 67),
-      createData('Donut', 452, 'yellow', 51),
-      createData('Eclair', 262, 'brown', 24),
-      createData('Frozen yoghurt',33, 'blue', 24),
-      createData('Gingerbread', 356, 'green', 49),
-      createData('Honeycomb', 408, 'white', 87),
-    ],
-    page: 0,
-    rowsPerPage: 5,
-  };
+  const [loading, setLoading] = useState(false);
+  const [roles, setRoles] = useState(data.roles);
 
-  handleRequestSort = (event, property) => {
-    const orderBy = property;
-    let order = 'desc';
+  // const [loading, setLoading] = useState(true);
+  // const [roles, setRoles] = useState([]);
 
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
-    }
+  const { classes } = props;
+  const [userName, setUsername] = useState("");
+  const [logo, setLogo] = useState("");
+  const [access, setAccess] = useState("");
 
-    this.setState({ order, orderBy });
-  };
+  // const { guildId } = useParams();
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
+  // Buy Role
+  const handleBuyRole = (role) => {
+    console.log(role)
+    setCurrentRole({
+      id: role.id,
+      guildId: 'guildId',
+      price: role.price,
+    })
+  }
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+  const [currentRole, setCurrentRole] = useState({
+    id: '',
+    guildId: '',
+    price: '',
+  })
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    console.log(selected);
-    this.setState({ selected: newSelected });
-  };
+  // useEffect(() => {
+  //   getAuth().then((res) => {
+  //     setAccess(res.data.msg);
+  //     if (access === "authorized") {
+  //       setUsername(res.data.user.discordTag);
+  //       setLogo(
+  //         `https://cdn.discordapp.com/avatars/${res.data.user.discordId}/${res.data.user.avatar}.png?size=128`
+  //       );
+  //     }
+  //   });
+  // }, [access]);
+  // useEffect(() => {
+  //   if (access != "authorized") {
+  //     getRoles(guildId).then(res => {
+  //       setRoles(res.data.roles);
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 2000);
+  //     });
+  //   }
+  // }, []);
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  return (
+    <>
+      {loading === true ? (
+        <Loading />
+      ) : (
+        <>
+          <div>
+            <NavBar logo={logo} userName={userName} access={access} />
 
-  render() {
-    const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-
-    return (
-      <div className="buyrole-main-div">
-        <Paper className="buyrole-root" style={{boxShadow: 'none'}}>
-          <p className="buyrole-p"> Total price is <strong></strong>$</p>
-          <div className="buyrole-tablewrapper-div">
-            <div className="buyrole-tablehead-div">
-              <Table aria-labelledby="tableTitle">
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={this.handleSelectAllClick}
-                  onRequestSort={this.handleRequestSort}
-                  rowCount={data.length}
-                />
-              </Table>
-            </div>
-            <div className="buyrole-tablewrapper">
-              <Table aria-labelledby="tableTitle">
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={this.handleSelectAllClick}
-                  onRequestSort={this.handleRequestSort}
-                  rowCount={data.length}
-                />
-                <TableBody className="buyrole-table" >
-                  {stableSort(data, getSorting(order, orderBy))
-                    .map(n => {
-                      const isSelected = this.isSelected(n.id);
-                      return (
-                        <TableRow
-                          hover
-                          onClick={event => this.handleClick(event, n.id)}
-                          role="checkbox"
-                          aria-checked={isSelected}
-                          tabIndex={-1}
-                          key={n.id}
-                          selected={isSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox checked={isSelected} />
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row" padding="none">
-                            {n.name}
-                          </TableCell>
-                          <TableCell align="center">{n.price}</TableCell>
-                          <TableCell align="center">
-                              <button style={{ background: n.color }} className="buyrole-colorbtn"></button>
-                            </TableCell>
-                          <TableCell align="center">{n.summary}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                </TableBody>
-              </Table>
-            </div>
+            <Container maxWidth="lg" >
+              <Box sx={{ width: '100%', paddingTop: '50px' }}>
+                <Typography variant="h4" gutterBottom component="div">
+                  Roles
+                </Typography>
+                <Typography variant="h6" gutterBottom component="div">
+                  Use roles to organize your server members and customize their permissions.
+                </Typography>
+              </Box>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650, border: 0 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">ROLES</TableCell>
+                      <TableCell align="right">MEMBERS</TableCell>
+                      <TableCell align="right">PRICE</TableCell>
+                      <TableCell align="right">ACTIONS</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {roles.map((role) => (
+                      <TableRow
+                        key={role.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row" align="left">
+                          <SupervisedUserCircleIcon sx={{ color: '#f03434' }} />
+                          <span className="ml-3">{role.name}</span>
+                        </TableCell>
+                        <TableCell align="right"> 1 <PersonIcon /> </TableCell>
+                        <TableCell align="right"> {role.price == null ? "NOT ADDED" : ('$ ' + role.price)} </TableCell>
+                        <TableCell align="right">
+                          <Button
+                            variant="contained"
+                            endIcon={<ShoppingCartIcon />}
+                            onClick={() => handleBuyRole(role)}
+                          >
+                            BUY
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Container>
           </div>
-        </Paper>
-        <div className="buyrole-paybtn-div">
-          <Fab
-              variant="extended"
-              size="large"
-              align="center"
-              color="primary"
-              aria-label="Add"
-              className={classes.margin} 
-              style = {{ alignSelf: 'center', width: '150px' }}
-            >
-              {/* <NavigationIcon className={classes.extendedIcon} /> */}
-              <p className="buyrole-pay-p">PAY</p>
-            </Fab>
-        </div>
-      </div>
-    );
-  }
+        </>
+      )
+      }
+    </>
+  );
 }
 
-BuyRole.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(BuyRole);
+export default withStyles(styles)(Role)

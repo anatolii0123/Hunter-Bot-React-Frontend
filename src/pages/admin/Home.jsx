@@ -24,6 +24,10 @@ function Home() {
       setTimeout(() => {
         setLoading(false);
       }, 1000)
+    }).catch(err => {
+      console.log(err)
+      setLoading(false);
+      setAccess('unauthorized');
     });
   }, [access]);
   return (
