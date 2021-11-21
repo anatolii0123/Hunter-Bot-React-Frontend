@@ -65,23 +65,16 @@ function Role(props) {
   const [logo, setLogo] = useState("");
   const [access, setAccess] = useState("");
 
-  // const { guildId } = useParams();
+  const { guildId, userId } = useParams();
 
   // Buy Role
   const handleBuyRole = (role) => {
-    console.log(role)
-    setCurrentRole({
-      id: role.id,
-      guildId: 'guildId',
-      price: role.price,
+    buyRole(guildId, userId, role.id).then((res) => {
+      console.log(res.data)
+    }).catch(err => {
+      console.log(err)
     })
   }
-
-  const [currentRole, setCurrentRole] = useState({
-    id: '',
-    guildId: '',
-    price: '',
-  })
 
   // useEffect(() => {
   //   getAuth().then((res) => {

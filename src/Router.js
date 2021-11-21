@@ -25,7 +25,7 @@ export default function Routing() {
         <Route path="/:guildId/role">
           <Role />
         </Route>
-        <Route path="/buyrole">
+        <Route path="/buyrole/guilds/:guildId/members/:userId">
           <BuyRole />
         </Route>
       </Switch>
