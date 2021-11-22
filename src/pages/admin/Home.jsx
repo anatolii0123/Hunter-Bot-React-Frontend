@@ -48,8 +48,7 @@ function Home() {
                     Discord Bot
                   </h1>
                   <p className="leading-normal text-2xl mb-8">
-                    {config.botName} is the best customizable bot for discord with a
-                    dashboard.
+                    {config.botName} is the best customizable bot for discord with a dashboard.
                   </p>
                   <div className="flex">
                     <button className="flex items-center px-7 py-3 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md hover:bg-indigo-800 focus:outline-none focus:bg-indigo-800">

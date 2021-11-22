@@ -2,7 +2,7 @@ module.exports = {
 
     botName: "Hunter",
 
-    clientId: "910229962349486082",
+    clientId: "912210833545773068",
 
     // site url
     site_url: "https://hunter-bot-backend.herokuapp.com",

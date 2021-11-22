@@ -66,13 +66,13 @@ const styleModal = {
 };
 
 function Role(props) {
-  const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": "12" }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
+  // const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": "12" }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
 
-  const [loading, setLoading] = useState(false);
-  const [roles, setRoles] = useState(data.roles);
+  // const [loading, setLoading] = useState(false);
+  // const [roles, setRoles] = useState(data.roles);
 
-  // const [loading, setLoading] = useState(true);
-  // const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [roles, setRoles] = useState([]);
 
   const [userName, setUsername] = useState("");
   const [logo, setLogo] = useState("");
@@ -122,27 +122,27 @@ function Role(props) {
   }
   // Modal
 
-  // useEffect(() => {
-  //   getAuth().then((res) => {
-  //     setAccess(res.data.msg);
-  //     if (access === "authorized") {
-  //       setUsername(res.data.user.discordTag);
-  //       setLogo(
-  //         `https://cdn.discordapp.com/avatars/${res.data.user.discordId}/${res.data.user.avatar}.png?size=128`
-  //       );
-  //     }
-  //   });
-  // }, [access]);
-  // useEffect(() => {
-  //   if (access != "authorized") {
-  //     getRoles(guildId).then(res => {
-  //       setRoles(res.data.roles);
-  //       setTimeout(() => {
-  //         setLoading(false);
-  //       }, 2000);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    getAuth().then((res) => {
+      setAccess(res.data.msg);
+      if (access === "authorized") {
+        setUsername(res.data.user.discordTag);
+        setLogo(
+          `https://cdn.discordapp.com/avatars/${res.data.user.discordId}/${res.data.user.avatar}.png?size=128`
+        );
+      }
+    });
+  }, [access]);
+  useEffect(() => {
+    if (access != "authorized") {
+      getRoles(guildId).then(res => {
+        setRoles(res.data.roles);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+      });
+    }
+  }, []);
 
   return (
     <>

@@ -18,8 +18,8 @@ export default function ServerCard({ guild, permission }) {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                // image={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`}
-                                image="/assets/image/dashboard/sample-server.png"
+                                image={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`}
+                                // image="/assets/image/dashboard/sample-server.png"
                                 alt="green iguana"
                             />
                         ) : (
@@ -55,7 +55,8 @@ export default function ServerCard({ guild, permission }) {
                                 variant="contained"
                                 color="primary"
                                 endIcon={<Add />}
-                                onClick={() => window.location.href = `http://discord.com/oauth2/authorize?client_id=${config.clientId}&scope=bot%20applications.commands&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent(config.redirect_uri)}`}
+                                // onClick={() => window.location.href = `http://discord.com/oauth2/authorize?client_id=${config.clientId}&scope=bot%20applications.commands&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent(config.redirect_uri)}`}
+                                onClick={() => window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${config.clientId}&permissions=8&redirect_uri=${encodeURIComponent(config.redirect_uri)}&response_type=code&scope=bot`}
                             > Invite </Button>
                         )
                     }
