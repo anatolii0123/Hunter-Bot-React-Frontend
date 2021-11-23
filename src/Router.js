@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 
 import Home from "./pages/admin/Home";
-// import Server from "./pages/admin/Sever";
 import Dashboard from "./pages/admin/Dashboard";
 import Role from './pages/admin/Role';
 import BuyRole from "./pages/client/BuyRole";

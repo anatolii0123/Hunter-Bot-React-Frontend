@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import config from "../../config";
 import Loading from "../../components/Loading";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/Header/NavBar";
 import { getAuth } from "../../api";
 
 function Home() {

@@ -28,7 +28,6 @@ import Menu from '@mui/material/Menu';
 import { logout } from '../api';
 
 const drawerWidth = 240;
-// const navdata = ['role', 'transection', 'setting', 'support'];
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',

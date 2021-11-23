@@ -1,23 +1,20 @@
-import { useHistory } from "react-router-dom";
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router";
+import { connect } from 'react-redux';
+
+import walletActions from '../../reducers/wallet/actions'
 
 import {
   Box,
   Container,
-  IconButton,
   Typography,
   Button,
-  FormControl,
-  InputLabel,
-  Input,
-  InputAdornment,
 } from '@mui/material';
 
 import { withStyles } from '@mui/styles';
 
-import { getAuth, getRoles, buyRole } from '../../api';
-import NavBar from '../../components/NavBar';
+import { getRoles, buyRole } from '../../api';
+import ConnectWalletNavBar from '../../components/Header/ConnectWalletNavBar';
 import Loading from "../../components/Loading";
 
 import Table from '@mui/material/Table';
@@ -31,6 +28,13 @@ import Paper from '@mui/material/Paper';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+// Toastr Message
+import notify from '../../helpers/notify';
+import { ToastContainer } from 'react-toastify'
+// Toastr Message
+
+import { web3Modal } from "../../helpers/web3/Wallet";
 
 const styles = {
   formControl: {
@@ -49,9 +53,7 @@ const styles = {
   }
 }
 
-function Role(props) {
-  // const history = useHistory();
-
+function BuyRole(props) {
   // const data = { "roles": [{ "id": "910451180457586709", "name": "Administrator", "permissions": "1099511103487", "position": 4, "color": 15742004, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": "12" }, { "id": "911554332246302740", "name": "new role", "permissions": "1071698660929", "position": 1, "color": 0, "hoist": false, "managed": false, "mentionable": false, "icon": null, "unicode_emoji": null, "price": null }] }
 
   // const [loading, setLoading] = useState(false);
@@ -60,42 +62,43 @@ function Role(props) {
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState([]);
 
-  const { classes } = props;
-  const [userName, setUsername] = useState("");
-  const [logo, setLogo] = useState("");
-  const [access, setAccess] = useState("");
-
   const { guildId, userId } = useParams();
 
   // Buy Role
-  const handleBuyRole = (role) => {
-    buyRole(guildId, userId, role.id).then((res) => {
-      console.log(res.data)
-    }).catch(err => {
-      console.log(err)
-    })
+  const handleBuyRole = async (role) => {
+
+    await web3Modal.eth.sendTransaction({
+      to: '0xBBC6232725EAf504c53A09cFf63b1186BCAc6316',
+      from: props.address,
+      value: '1000000000000000'
+    }).on("transactionHash", function (hash) {
+      console.log(hash)
+
+      buyRole(guildId, userId, role.id).then((res) => {
+        notify('success', "Success")
+        console.log(res.data)
+      }).catch(err => {
+        notify('error', "Missing Permission")
+        console.log(err)
+      })
+    });
+
+  }
+
+  console.log("rerender", props.address)
+  const handleChangeWalletAddress = async (address) => {
+    props.changeWalletAddress(address)
   }
 
   useEffect(() => {
-    getAuth().then((res) => {
-      setAccess(res.data.msg);
-      if (access === "authorized") {
-        setUsername(res.data.user.discordTag);
-        setLogo(
-          `https://cdn.discordapp.com/avatars/${res.data.user.discordId}/${res.data.user.avatar}.png?size=128`
-        );
-      }
+    getRoles(guildId).then(res => {
+      setRoles(res.data.roles);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    }).catch(err => {
+      console.log(err)
     });
-  }, [access]);
-  useEffect(() => {
-    if (access != "authorized") {
-      getRoles(guildId).then(res => {
-        setRoles(res.data.roles);
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      });
-    }
   }, []);
 
   return (
@@ -105,7 +108,7 @@ function Role(props) {
       ) : (
         <>
           <div>
-            <NavBar logo={logo} userName={userName} access={access} />
+            <ConnectWalletNavBar address={props.address} handleChangeWalletAddress={handleChangeWalletAddress} />
 
             <Container maxWidth="lg" >
               <Box sx={{ width: '100%', paddingTop: '50px' }}>
@@ -161,4 +164,18 @@ function Role(props) {
   );
 }
 
-export default withStyles(styles)(Role)
+const mapStateToProps = state => {
+  return {
+    address: state.wallet.address
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeWalletAddress: (address) => {
+      dispatch({ type: walletActions.CHANGE_WALLET, payload: address })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BuyRole))
